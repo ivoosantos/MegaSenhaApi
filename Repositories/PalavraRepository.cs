@@ -28,6 +28,16 @@ namespace MegaSenhaApi.Repositories
             lista.Results.AddRange(item.ToArray());
             return lista;
         }
+
+        public IEnumerable<Palavra> GetPalavra(PalavraUrlQuery query)
+        {
+            var item = _banco.Palavras.AsNoTracking().AsQueryable();
+            if (query.Data.HasValue)
+                item = item.Where(a => a.Criado > query.Data.Value || a.Atualizado > query.Data.Value);
+
+            return item.ToArray();
+        }
+
         public Palavra Obter(int id)
         {
             return _banco.Palavras.AsNoTracking().FirstOrDefault(a => a.Id == id);
